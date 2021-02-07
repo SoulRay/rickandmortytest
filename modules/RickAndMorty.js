@@ -15,4 +15,17 @@ export default class RickAndMorty {
         return fetch('https://rickandmortyapi.com/api/character/?name=c')
         .then((response) => response.json())
     }
+
+    async getCountPage() {
+        debugger;
+        try {
+            const response = await fetch('https://rickandmortyapi.com/api/character/?name=c');
+            const data = await response.json();
+            const qtyPages = await data.info.pages
+            return qtyPages;
+        } catch (error) {
+            console.error(error);
+        }
+        
+    }
 }
