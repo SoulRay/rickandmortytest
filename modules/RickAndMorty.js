@@ -29,8 +29,8 @@ export default class RickAndMorty {
             const countPage = await this.getCountPage(resource, searchName);
             const regMatch = new RegExp(`${searchLetter}`, 'ig');
             let totalQty = 0;
-            for (let i = 0; i < countPage; i++) {
-                const response = await fetch(`https://rickandmortyapi.com/api/${resource}/?name=${searchName}&page=${countPage[i]}`);
+            for (let i = 1; i <= countPage; i++) {
+                const response = await fetch(`https://rickandmortyapi.com/api/${resource}/?name=${searchName}&page=${i}`);
                 const data = await response.json();
                 const quantity = await Object.values(data.results).reduce((a, n) => {
                     return a + (n.name.match(regMatch) == null ? 0 : n.name.match(regMatch).length);
@@ -52,6 +52,21 @@ export default class RickAndMorty {
         } catch (error) {
             console.error(error);
         }
+    }
 
+    async getAllResourceData(resource) {
+        try {
+            //debugger;
+            const countPage = await this.getCountPage(resource, '');
+            let allData = [];
+            for (let i = 1; i <= countPage; i++) {
+                const response = await fetch(`https://rickandmortyapi.com/api/${resource}/?page=${i}`);
+                const data = await response.json();
+                data.results.map(x => allData.push(x)); 
+            }
+            return allData;
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
